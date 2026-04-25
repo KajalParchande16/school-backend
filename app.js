@@ -14,7 +14,7 @@ import teacherRouter from './routes/teacher.js';
 dotenv.config({path:'./config/config.env'});
 const app=express();
 dbConnection();
-const port=4400 ;
+const port= process.env.PORT || 4400; ;
 // console.log(port);
 app.use(morgan('dev'));
 app.use(cors());
