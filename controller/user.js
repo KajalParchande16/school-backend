@@ -76,28 +76,36 @@ export const getUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        const {
-            name,
-            email,
-            phone,
-            role,
-            permissions,
-            isActive,
-            profileImage,
-        } = req.body;
+        // const {
+        //     name,
+        //     email,
+        //     phone,
+        //     role,
+        //     permissions,
+        //     isActive,
+        //     profileImage,
+        // } = req.body;
+        const updates = req.body;
+        // 1. Array of fields that are mandatory and CANNOT be empty strings
+        const requiredFields = ["name", "email", "role", "phone"];
 
+        // 2. Check if any of these fields are present in req.body BUT are empty/blank
+        for (const field of requiredFields) {
+            if (updates[field] !== undefined && (updates[field] === null || updates[field].toString().trim() === "")) {
+                return res.status(400).json({
+                    message: `${field.charAt(0).toUpperCase() + field.slice(1)} cannot be empty. All fields are required!`,
+                    success: false,
+                });
+            }
+        }
         const updatedUser = await User.findByIdAndUpdate(
             req.params.id,
+            { $set: updates }, // 👈 $set tells MongoDB to ONLY update fields present in updates
             {
-                name,
-                email,
-                phone,
-                role,
-                permissions,
-                isActive,
-                profileImage,
+                new: true,
+                runValidators: true // 👈 Validates data rules without resetting other fields
             },
-            { new: true }
+            // { new: true }
         ).select("-password");
 
         if (!updatedUser) {

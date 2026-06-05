@@ -8,14 +8,14 @@ export const  authenticateJWT=(req,res,next)=>
     const token=authHeader && authHeader.split(" ")[1];
     if(!token)
     {
-        res.status(400).json({
+      return  res.status(400).json({
             error:"Access Denied token missing"
         })
     }
     try {
 
         const decoder=jwt.verify(token,process.env.JWT_SECRET);
-        res.user=decoder;
+        req.user=decoder;
         next();
     } catch (error) {
         console.error("JWT Verification error",error);
@@ -24,3 +24,14 @@ export const  authenticateJWT=(req,res,next)=>
         })
     }
 }
+
+export const isAdmin = (req, res, next) => {
+    // console.log(req.user);
+  if (req.user.role !== "Admin") {
+    return res.status(403).json({
+      success: false,
+      message: "Access denied. Admins only."
+    });
+  }
+  next();
+};

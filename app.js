@@ -9,6 +9,7 @@ import noticeRoute from './routes/notice.js'
 import gallaryRoute from './routes/gallary.js';
 import eventRouter from './routes/event.js';
 import teacherRouter from './routes/teacher.js';
+import admissionRoute from './routes/admission.js';
 // import teacherAttendance from './routes/teacher_attendance.js';
 import userRoute from './routes/user.js'
 import { swaggerUi, specs } from './config/swagger.js';
@@ -32,6 +33,7 @@ app.use("/api/notice/", noticeRoute);
 app.use("/api/gallary/", gallaryRoute);
 app.use("/api/event/", eventRouter);
 app.use("/api/teacher/", teacherRouter);
+app.use("/api/admissions",admissionRoute);
 // app.use('/api/attendance', teacherAttendance);
 app.use("/api/user", userRoute);
 
