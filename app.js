@@ -10,8 +10,13 @@ import gallaryRoute from './routes/gallary.js';
 import eventRouter from './routes/event.js';
 import teacherRouter from './routes/teacher.js';
 import admissionRoute from './routes/admission.js';
+import subjectRoute from './routes/subject.js';
+import classRoute from './routes/class.js';
+import classSubjectRoute from './routes/classSubject.js';
+import studentRoute from './routes/student.js';
+import stuAttendanceRoute from './routes/student_Attendance.js';
 // import teacherAttendance from './routes/teacher_attendance.js';
-import userRoute from './routes/user.js'
+import userRoute from './routes/user.js';
 import { swaggerUi, specs } from './config/swagger.js';
 
 dotenv.config({ path: './config/config.env' });
@@ -33,9 +38,16 @@ app.use("/api/notice/", noticeRoute);
 app.use("/api/gallary/", gallaryRoute);
 app.use("/api/event/", eventRouter);
 app.use("/api/teacher/", teacherRouter);
-app.use("/api/admissions",admissionRoute);
+app.use("/api/admissions", admissionRoute);
 // app.use('/api/attendance', teacherAttendance);
 app.use("/api/user", userRoute);
+app.use("/api/subject", subjectRoute);
+app.use('/api/classes', classRoute);
+app.use('/api/class-subject', classSubjectRoute);
+app.use('/api/student', studentRoute);
+app.use('/api/studentAttendance', stuAttendanceRoute);
+
+
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.listen(port, () => console.log(`Server is running on port ${port}`));
