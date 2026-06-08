@@ -17,6 +17,27 @@ export const submitAdmission = async (req, res) => {
     if (!studentDetails?.studentName)
       return res.status(400).json({ message: "Student name is required" });
 
+     if (!studentDetails?.dob)
+      return res.status(400).json({ message: "Student Dob is required" });
+
+      if (!studentDetails?.gender)
+      return res.status(400).json({ message: "Student gender is required" });
+
+       if (!studentDetails?.religion)
+      return res.status(400).json({ message: "Student religion is required" });
+
+        if (!studentDetails?.castCategory)
+      return res.status(400).json({ message: "Student castCategory is required" });
+
+         if (!studentDetails?.nationality)
+      return res.status(400).json({ message: "Student nationality is required" });
+
+          if (!studentDetails?.motherTongue)
+      return res.status(400).json({ message: "Student motherTongue is required" });
+
+     if (!studentDetails?.studentName)
+      return res.status(400).json({ message: "Student name is required" });
+
     if (!studentDetails?.aadhaar)
       return res.status(400).json({ message: "Student Aadhaar is required" });
 
@@ -202,7 +223,49 @@ export const getAdmissionById = async (req, res) => {
 //   }
 // };
 
+export const updateAdmission = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedFields = req.body;
 
+    // Optional Safety Check: Prevent accidental status modification through the standard edit form
+    // If you want status to ONLY be changed via your updateAdmissionStatus endpoint, uncomment the line below:
+    // delete updatedFields.status;
+
+    // Find document by ID and update using MongoDB $set operator implicitly
+    const updatedAdmission = await Admission.findByIdAndUpdate(
+      id,
+      updatedFields,
+      { 
+        new: true,          // Returns the modified document instead of the original
+        runValidators: true // Enforces Mongoose schema validation rules on update
+      }
+    );
+
+    // If no record matches the passed MongoDB string ID
+    if (!updatedAdmission) {
+      return res.status(404).json({
+        success: false,
+        message: "Admission application record not found"
+      });
+    }
+
+    // Return successful response
+    res.status(200).json({
+      success: true,
+      message: "Admission application updated successfully!",
+      data: updatedAdmission
+    });
+
+  } catch (error) {
+    // Catch schema validation failures or database runtime execution bugs
+    res.status(500).json({
+      success: false,
+      message: "Failed to update admission record",
+      error: error.message
+    });
+  }
+};
 export const updateAdmissionStatus = async (req, res) => {
   try {
     const { status, rejectionReason, classId, rollNumber } = req.body;

@@ -5,6 +5,7 @@ import {
   getAdmissionById,
   updateAdmissionStatus,
   deleteAdmission,
+  updateAdmission
 } from "../controller/admission.js";
 import { authenticateJWT, isAdmin } from "../middleware/auth.middleware.js";
 import Admission from "../model/admission.model.js";
@@ -280,6 +281,7 @@ router.patch("/:id/status", authenticateJWT, isAdmin, updateAdmissionStatus);
 router.delete("/:id", authenticateJWT, isAdmin, deleteAdmission);
 //  router.delete("/:id", authenticateJWT, deleteAdmission);
 
+router.put("/:id", updateAdmission);
 router.post("/seed", async (req, res) => {
   await Admission.insertMany(req.body);
   res.json({ message: "20 admissions added!" });
